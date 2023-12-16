@@ -234,8 +234,9 @@ class BrushFlow(_PluginBase):
                 self._scheduler = BackgroundScheduler(timezone=settings.TZ)
                 try:
                    if str(self._cron).strip().count(" ") == 4:
-                      self._scheduler.add_job(func=self.brush,trigger=CronTrigger.from_crontab(self._cron))
-                      logger.info(f"站点刷流服务启动，执行周期 {self._cron}")
+                      trigger=CronTrigger.from_crontab(self._cron)
+                      self._scheduler.add_job(func=self.brush,"cron",hour=trigger.hour, minute=trigger.minute,name="站点刷流")
+                      logger.info(f"站点刷流服务启动，执行周期 {trigger.hour}小时-{trigger.minute}分钟")
                    else:
                      self._scheduler.add_job(self.brush, 'interval', minutes=10)
                      logger.info(f"站点刷流服务启动，执行周期10分钟")
