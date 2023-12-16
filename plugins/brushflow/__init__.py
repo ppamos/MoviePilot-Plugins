@@ -32,7 +32,7 @@ class BrushFlow(_PluginBase):
     # 插件图标
     plugin_icon = "brush.jpg"
     # 插件版本
-    plugin_version = "1.4"
+    plugin_version = "1.5"
     # 插件作者
     plugin_author = "ppamos"
     # 作者主页
@@ -232,11 +232,9 @@ class BrushFlow(_PluginBase):
 
                 # 启动任务
                 self._scheduler = BackgroundScheduler(timezone=settings.TZ)
-                logger.info(f"站点刷流服务启动，周期：{self._cron}")
                 try:
                    if str(self._cron).strip().count(" ") == 4:
-                      self._scheduler.add_job(func=self.brush,
-                      trigger=CronTrigger.from_crontab(self._cron),name="站点刷流")
+                      self._scheduler.add_job(func=self.brush,trigger=CronTrigger.from_crontab(self._cron))
                       logger.info(f"站点刷流服务启动，执行周期 {self._cron}")
                    else:
                      self._scheduler.add_job(self.brush, 'interval', minutes=10)
