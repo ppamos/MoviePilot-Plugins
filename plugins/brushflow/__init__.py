@@ -235,10 +235,10 @@ class BrushFlow(_PluginBase):
                 try:
                    if str(self._cron).strip().count(" ") == 4:
                       self._scheduler.add_job(func=self.brush,trigger=CronTrigger.from_crontab(self._cron),name="站点刷流")
-                      logger.info(f"站点刷流服务启动，执行周期 {self._cron}钟")
+                      logger.info(f"站点刷流服务启动，执行周期 {self._cron}")
                    else:
-                     self._scheduler.add_job(self.brush, 'interval', minutes=10)
-                     logger.info(f"站点刷流服务启动，执行周期10分钟")
+                     self._scheduler.add_job(self.brush, 'interval', minutes=30)
+                     logger.info(f"站点刷流服务启动，执行周期30分钟")
                 except Exception as e:
                     logger.error(f"站点刷流服务启动失败：{str(e)}")
                     self._cron = ""
@@ -374,7 +374,7 @@ class BrushFlow(_PluginBase):
                                         'props': {
                                             'model': 'cron',
                                             'label': '执行周期',
-                                            'placeholder': '5位cron表达式，留空默认10分钟'
+                                            'placeholder': '5位cron表达式，留空默认30分钟'
                                         }
                                     }
                                 ]
