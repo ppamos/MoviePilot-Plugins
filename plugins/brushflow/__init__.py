@@ -51,7 +51,7 @@ class BrushFlow(_PluginBase):
     qb = None
     tr = None
     # 添加种子定时
-    _cron = "10"
+    _cron = ""
     # 检查种子定时
     _check_interval = 5
     # 退出事件
@@ -238,10 +238,11 @@ class BrushFlow(_PluginBase):
                       trigger=CronTrigger.from_crontab(self._cron),name="站点刷流")
                       logger.info(f"站点自动签到服务启动，执行周期 {self._cron}")
                    else:
-                     self._scheduler.add_job(self.brush, 'interval', minutes=self._cron)
+                     self._scheduler.add_job(self.brush, 'interval', minutes=10)
+                     logger.info(f"站点自动签到服务启动，执行周期10分钟")
                 except Exception as e:
                     logger.error(f"站点刷流服务启动失败：{str(e)}")
-                    self._cron = "10"
+                    self._cron = ""
                     self._enabled = False
                     self.__update_config()
                     self.systemmessage.put(f"站点刷流服务启动失败：{str(e)}")
@@ -374,7 +375,7 @@ class BrushFlow(_PluginBase):
                                         'props': {
                                             'model': 'cron',
                                             'label': '执行周期',
-                                            'placeholder': '5位cron表达式，留空自动'
+                                            'placeholder': '5位cron表达式，留空默认10分钟'
                                         }
                                     }
                                 ]
