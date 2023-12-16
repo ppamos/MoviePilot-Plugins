@@ -25,13 +25,13 @@ lock = threading.Lock()
 
 class BrushFlow(_PluginBase):
     # 插件名称
-    plugin_name = "站点刷流"
+    plugin_name = "站点刷流(执行周期版)"
     # 插件描述
     plugin_desc = "自动托管刷流，增加执行周期"
     # 插件图标
     plugin_icon = "brush.jpg"
     # 插件版本
-    plugin_version = "1.1"
+    plugin_version = "1.2"
     # 插件作者
     plugin_author = "ppamos"
     # 作者主页
