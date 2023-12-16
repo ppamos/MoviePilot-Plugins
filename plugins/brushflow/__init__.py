@@ -27,15 +27,15 @@ class BrushFlow(_PluginBase):
     # 插件名称
     plugin_name = "站点刷流"
     # 插件描述
-    plugin_desc = "自动托管刷流，将会提高对应站点的访问频率。"
+    plugin_desc = "自动托管刷流，增加执行周期"
     # 插件图标
     plugin_icon = "brush.jpg"
     # 插件版本
     plugin_version = "1.0"
     # 插件作者
-    plugin_author = "jxxghp"
+    plugin_author = "jxxghp,ppamos"
     # 作者主页
-    author_url = "https://github.com/jxxghp"
+    author_url = "https://github.com/ppamos"
     # 插件配置项ID前缀
     plugin_config_prefix = "brushflow_"
     # 加载顺序
@@ -356,6 +356,23 @@ class BrushFlow(_PluginBase):
                             {
                                 'component': 'VCol',
                                 'props': {
+                                    'cols': 12,
+                                    'md': 6
+                                },
+                                'content': [
+                                    {
+                                        'component': 'VTextField',
+                                        'props': {
+                                            'model': 'cron',
+                                            'label': '执行周期',
+                                            'placeholder': '5位cron表达式，留空自动'
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                'component': 'VCol',
+                                'props': {
                                     "cols": 12,
                                     "md": 4
                                 },
@@ -373,6 +390,7 @@ class BrushFlow(_PluginBase):
                                     }
                                 ]
                             },
+
                             {
                                 'component': 'VCol',
                                 'props': {
