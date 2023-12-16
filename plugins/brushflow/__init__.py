@@ -51,7 +51,7 @@ class BrushFlow(_PluginBase):
     qb = None
     tr = None
     # 添加种子定时
-    _cron = 10
+    _cron = "10"
     # 检查种子定时
     _check_interval = 5
     # 退出事件
@@ -90,6 +90,7 @@ class BrushFlow(_PluginBase):
         self.sites = SitesHelper()
         if config:
             self._enabled = config.get("enabled")
+            self._cron=config.get("cron")
             self._notify = config.get("notify")
             self._onlyonce = config.get("onlyonce")
             self._brushsites = config.get("brushsites")
@@ -230,11 +231,19 @@ class BrushFlow(_PluginBase):
 
                 # 启动任务
                 self._scheduler = BackgroundScheduler(timezone=settings.TZ)
-                logger.info(f"站点刷流服务启动，周期：{self._cron}分钟")
+                logger.info(f"站点刷流服务启动，周期：{self._cron}")
                 try:
-                    self._scheduler.add_job(self.brush, 'interval', minutes=self._cron)
+                   if str(self._cron).strip().count(" ") == 4:
+                      self._scheduler.add_job(func=self.brush,
+                      trigger=CronTrigger.from_crontab(self._cron),name="站点刷流")
+                      logger.info(f"站点自动签到服务启动，执行周期 {self._cron}")
+                   else:
+                     self._scheduler.add_job(self.brush, 'interval', minutes=self._cron)
                 except Exception as e:
                     logger.error(f"站点刷流服务启动失败：{str(e)}")
+                    self._cron = "10"
+                    self._enabled = False
+                    self.__update_config()
                     self.systemmessage.put(f"站点刷流服务启动失败：{str(e)}")
                     return
                 if self._onlyonce:
@@ -1228,6 +1237,7 @@ class BrushFlow(_PluginBase):
         self.update_config({
             "onlyonce": self._onlyonce,
             "enabled": self._enabled,
+            "cron": self._cron,
             "notify": self._notify,
             "brushsites": self._brushsites,
             "downloader": self._downloader,
